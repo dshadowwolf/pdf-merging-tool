@@ -10,18 +10,19 @@ const isLinux = process.platform === "linux";
 function createWindow () {
     // Create the browser window.
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
-        frame: false,
+        width: 1280,
+        height: 800,
+        frame: isWindows||isLinux?false:true,
 
         webPreferences: {
-            preload: path.join(__dirname, "static/scripts/preload.js")
+            preload: path.join(__dirname, "static/scripts/preload.js"),
+            enableRemoteModule: true
         }
     })
 
     // and load the index.html of the app.
     win.loadFile('static/index.html');
-    win.webContents.openDevTools();
+    //win.webContents.openDevTools();
     win.on("closed", () => mainWindow = null);
     mainWindow = win;
 }
@@ -48,12 +49,9 @@ app.on('activate', () => {
     }
 })
 
-console.log(process.platform);
-
 // Register an event listener. When ipcRenderer sends mouse click co-ordinates, show menu at that point.
 ipcMain.on(`display-app-menu`, function(e, args) {
     if ((isWindows || isLinux) && mainWindow) {
-        console.log("popup!!!");
         menu.popup({
             window: mainWindow,
             x: args.x,
@@ -61,4 +59,3 @@ ipcMain.on(`display-app-menu`, function(e, args) {
         });
     }
 });
-

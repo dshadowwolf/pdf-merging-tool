@@ -22,5 +22,3 @@ window.addEventListener("DOMContentLoaded", () => {
   window.isWindowMaximized = isWindowMaximized;
   window.closeWindow = closeWindow;
 });
-
-console.log("preload.js called");

@@ -1,7 +1,7 @@
 const { remote, ipcRenderer } = require("electron");
 
 function getCurrentWindow() {
-  return remote.getCurrentWindow();
+    return remote.getCurrentWindow();
 }
 
 function openMenu(x, y) {
@@ -35,7 +35,7 @@ function maxUnmaxWindow(browserWindow = getCurrentWindow()) {
 }
 
 function closeWindow(browserWindow = getCurrentWindow()) {
-  browserWindow.close();
+    browserWindow.close();
 }
 
 function isWindowMaximized(browserWindow = getCurrentWindow()) {
