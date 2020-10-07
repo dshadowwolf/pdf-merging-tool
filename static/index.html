@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Hello World!</title>
+        <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+        <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+        <link rel="stylesheet" href="css/normalize.css" />
+        <link rel="stylesheet" href="css/base.css" />
+        <link rel="stylesheet" href="css/menu_styles.css" />
+        <link rel="stylesheet" href="css/all.css" />
+        <script crossorigin="anonymous" src="js/all.js" ></script>
+    </head>
+    <body>
+        <div id="menu-bar">
+            <div class="left" role="menu">
+                <button class="menubar-btn" id="menu-btn"><i class="fas fa-bars"></i></button>
+                <h5>PDF Merge Tool</h5>
+            </div>
+            <div class="right">
+                <button class="menubar-btn" id="minimize-btn"><i class="fas fa-window-minimize"></i></button>
+                <button class="menubar-btn" id="max-unmax-btn"><i class="far fa-square"></i></button>
+                <button class="menubar-btn" id="close-btn"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="container">
+            Hello there!
+        </div>
+
+        <!-- You can also require other files to run in this process -->
+        <script src="scripts/renderer.js"></script>
+    </body>
+</html>

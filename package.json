@@ -1,0 +1,15 @@
+{
+  "name": "pdf-merger",
+  "version": "1.0.0",
+  "description": "simple tool to merge a set of PDF's into a single file",
+  "main": "index.js",
+  "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "electron ."
+  },
+  "author": "Daniel \"DShadowWolf\" Hazelton",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "electron": "^10.1.3"
+  }
+}
