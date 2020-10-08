@@ -1,8 +1,12 @@
 #TODO
 * Examine React for inclusion for display
 * Find decent PDF.js for inclusion for item view
-* Look into Drag&Drop for adding files for merger
 * Examine Electron IPC for use for communicating with NodeJS code doing PDF merger
-* Figure out Menu tie-in for new/save/save-as
 * Turn off all possiblity of developer tools
-* Find NodeJS+Electron -> Native packaging tool
+
+#Progression
+* Rework setup to pure drag&drop with S3-like display for file list in a separate window
+* Add IPC or top-level `window` hooks for doing merge and save completely in-app
+* Replace `stack menu` with toolbar-like buttons for merge/load zip/save
+* Can rework merge process to allow for progress bar (thanks Promises!)
+* Figure out PDF.js so we can view a buffer (if not possible use mkstemp or similar to output to a temp file for preview)
