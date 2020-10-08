@@ -1,8 +1,8 @@
 #TODO
-* Examine React for inclusion for display
-* Find decent PDF.js for inclusion for item view
-* Examine Electron IPC for use for communicating with NodeJS code doing PDF merger
-* Turn off all possiblity of developer tools
+* Rework system so drag&drop list display/progress/work window is a separate BrowserWindow() rather than via `window.open()`
+* Rework system so preview window is also a standard BrowserWindow() rather than the current `window.open()`
+* Make `window chrome` setup more uniform so all windows share similar display
+* Look into customizing save-file dialog - likely not possible, but it'd be nice to have it match things
 
 #Progression
 * Rework setup to pure drag&drop with S3-like display for file list in a separate window
