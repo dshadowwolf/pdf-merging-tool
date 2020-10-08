@@ -1,10 +1,10 @@
-#TODO
+# TODO
 * Rework system so drag&drop list display/progress/work window is a separate BrowserWindow() rather than via `window.open()`
 * Rework system so preview window is also a standard BrowserWindow() rather than the current `window.open()`
 * Make `window chrome` setup more uniform so all windows share similar display
 * Look into customizing save-file dialog - likely not possible, but it'd be nice to have it match things
 
-#Progression
+# Progression
 * Rework setup to pure drag&drop with S3-like display for file list in a separate window
 * Add IPC or top-level `window` hooks for doing merge and save completely in-app
 * Replace `stack menu` with toolbar-like buttons for merge/load zip/save
