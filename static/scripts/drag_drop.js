@@ -59,6 +59,7 @@ document.addEventListener('dataReady', (event) => {
         });
         wrapper.appendChild(it);
     }
+    window.sendLoadedFileList(filtered);
     doc.appendChild(wrapper);
 });
 

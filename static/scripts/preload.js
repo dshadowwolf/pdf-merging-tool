@@ -12,8 +12,9 @@ const {
     closeWindow
 } = require("./menu-functions");
 const {
-    getFileType,
-    inspect
+    inspect,
+    sendIPC,
+    invokeIPC
 } = require("./aux-functions");
 const path = require('path');
 const con = require('console');
@@ -40,4 +41,6 @@ window.addEventListener("DOMContentLoaded", () => {
             win.loadURL(url);
         }
     };
+    window.sendLoadedFileList = (data) => { sendIPC('file-data', data) };
+    window.mergeFiles = async () => { return invokeIPC('merge-pdfs') };
 });

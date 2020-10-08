@@ -1,11 +1,36 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, dialog } = require('electron');
 const path = require('path');
-const { menu } = require('./lib/menu');
+const fs = require('fs');
+const {PDFDocument } = require('pdf-lib');
 
-let mainWindow;
+var mainWindow;
 
 const isWindows = process.platform === "win32";
 const isLinux = process.platform === "linux";
+const isMac = process.platform === "darwin";
+
+const template = [
+    { label: "Save Merged PDF", accelerator: 'CommandOrControl+S', click: (event) => {
+        console.log('Save!');
+        let filename = dialog.showSaveDialogSync(mainWindow, {
+            title: 'Save Merged PDF',
+            filters: [
+                { name: 'PDF Files', extensions: [ 'pdf' ] },
+                { name: 'All Files', extensions: [ '*' ] }
+            ]
+        });
+        let data = mergePDFs();
+        data instanceof Promise?data.then(dataBuffer => {
+            console.log(`writing ${dataBuffer.length} bytes to ${filename}`);
+            fs.writeFileSync(filename, dataBuffer);
+        }):fs.writeFileSync(filename, data);
+    } },
+    { type: 'separator' },
+    isMac ? { role: "close" } : { role: "quit" }
+];
+
+const menu = Menu.buildFromTemplate(template);
+Menu.setApplicationMenu(menu);
 
 function createWindow () {
     // Create the browser window.
@@ -77,8 +102,39 @@ ipcMain.on(`display-app-menu`, function(e, args) {
     }
 });
 
-function mangleToObject(st) {
-    let t = st.split(',');
-    console.log(t);
+async function mergePDFs() {
+    if (sourcePDFs.length == 0) {
+        return Buffer.from("");
+    } else  if (sourcePDFs.length == 1) {
+        return fs.readFileSync(sourcePDFs[0]);
+    } else {
+        let doc = await PDFDocument.create();
+
+        for( let i = 0; i < sourcePDFs.length; i++) {
+            console.log(`reading ${sourcePDFs[i]} (item ${i} in the array of ${sourcePDFs.length} items)`);
+            const data = await PDFDocument.load(fs.readFileSync(sourcePDFs[i]));
+            const contentPages = await doc.copyPages(data, data.getPageIndices());
+            let pc = 1;
+            for (const page of contentPages) {
+                doc.addPage( page );
+                console.log(`merging page ${pc} of ${sourcePDFs[i]} into output document`);
+                pc += 1;
+            }
+        }
+
+        return doc.save();
+    }
 }
 
+var sourcePDFs = [];
+
+ipcMain.on(`merge-pdfs`, function(e, args) {
+    let data = mergePDFs();
+    data instanceof Promise?data.then( d => e.returnValue = d):e.returnValue = data;
+});
+
+ipcMain.on(`file-data`, (e, args) => {
+    console.log(require('util').inspect(args, { depth: 3 }));
+    sourcePDFs = args.map( (item) => item.name );
+    console.log(require('util').inspect(sourcePDFs, { depth: 3 }));
+});
