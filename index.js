@@ -16,15 +16,32 @@ function createWindow () {
 
         webPreferences: {
             preload: path.join(__dirname, "static/scripts/preload.js"),
-            enableRemoteModule: true
+            enableRemoteModule: true,
+            nodeIntegration: true
         }
     })
 
     // and load the index.html of the app.
     win.loadFile('static/index.html');
-    //win.webContents.openDevTools();
+    win.webContents.openDevTools();
     win.on("closed", () => mainWindow = null);
     mainWindow = win;
+    win.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures, referrer, postBody) => {
+        if (url.includes('viewer.html')) {
+            event.preventDefault();
+            const nwin = new BrowserWindow({
+                webContents: options.webContents,
+                show: false,
+                webPreferences: options.webPreferences,
+                preload: options.preload,
+                frame: options.frame
+            });
+            if (options.menubar == "no" || options.menubar == false) nwin.setMenuBarVisibility(false);
+            nwin.once('ready-to-show', () => nwin.show());
+            nwin.loadURL(url);
+            event.newGuest = nwin;
+        } 
+    });
 }
 
 // This method will be called when Electron has finished
@@ -59,3 +76,9 @@ ipcMain.on(`display-app-menu`, function(e, args) {
         });
     }
 });
+
+function mangleToObject(st) {
+    let t = st.split(',');
+    console.log(t);
+}
+

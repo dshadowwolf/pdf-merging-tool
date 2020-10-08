@@ -1,3 +1,39 @@
 * {
     font-family: Arial, Helvetica, sans-serif !important;
 }
+
+ul.file-list {
+    font-size: 12px;
+    list-style-type:  "⟶";
+}
+
+li.file-list-item::marker {
+    color: red;
+}
+
+ul.file-list > li.file-list-item {
+    font-size: 14px;
+    padding: 0;
+    padding-left: 1em;
+    margin: 0;
+}
+
+
+li.file-list-item:nth-child(odd)::marker {
+    color: red !important;
+}
+
+li.file-list-item:nth-child(even)::marker {
+    color: green !important;
+}
+
+ul.file-list > li.file-list-item:nth-child(odd) {
+//    color: black;
+//    background-color: white;
+}
+
+ul.file-list > li.file-list-item:nth-child(even) {
+//    color: white;
+//    background-color: #34475ab0;
+}
+

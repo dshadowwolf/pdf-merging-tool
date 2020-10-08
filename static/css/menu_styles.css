@@ -30,9 +30,9 @@ body {
   background: #34475ab0;
   color: white;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2em;
+  justify-content: top;
+  align-items: left;
+  font-size: 14px;
 }
 
 button {

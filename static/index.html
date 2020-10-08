@@ -23,11 +23,13 @@
                 <button class="menubar-btn" id="close-btn"><i class="fas fa-times"></i></button>
             </div>
         </div>
-        <div class="container">
-            Hello there!
+        <div class="container" id="data_display">
+            No Files Loaded
+            Chrome <script>document.write(process.versions.chrome)</script>
         </div>
 
         <!-- You can also require other files to run in this process -->
         <script src="scripts/renderer.js"></script>
+        <script src="scripts/drag_drop.js"></script>
     </body>
 </html>
