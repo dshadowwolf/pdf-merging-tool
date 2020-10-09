@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <title>PDF Viewer</title>
         <link rel="stylesheet" href="css/normalize.css" />
         <link rel="stylesheet" href="css/base.css" />
@@ -11,10 +12,31 @@
         <script crossorigin="anonymous" src="js/all.js" ></script>
     </head>
     <body>
-        <div class='viewer' id='viewer'>
-
+        <div id="menu-bar">
+            <div class="left" role="menu">
+            </div>
+            <div class="right">
+                <button class="menubar-btn" id="minimize-btn"><i class="fas fa-window-minimize"></i></button>
+                <button class="menubar-btn" id="max-unmax-btn"><i class="far fa-square"></i></button>
+                <button class="menubar-btn" id="close-btn"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="pdfContainer" id="data_display">
         </div>
 
-        <script src='./scripts/viewer_render.js'></script>
+        <!-- You can also require other files to run in this process -->
+        <script src="scripts/renderer.js"></script>
+		<script>
+		//<!--
+		console.log(`widthxheight: ${window.innerWidth}x${window.innerHeight}`)
+		const elem = document.getElementById('data_display');
+		elem.style.width = window.innerWidth;
+		elem.style.height = window.innerHeight;
+		const disp = document.createElement('iframe');
+		elem.innerHTML = "";
+		disp.src = './pdfjs/web/viewer.html?file=../../other/test.pdf'
+		elem.appendChild(disp);
+		//-->
+		</script>
     </body>
 </html>

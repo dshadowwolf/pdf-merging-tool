@@ -17,9 +17,9 @@ window.addEventListener("DOMContentLoaded", () => {
   const minimizeButton = document.getElementById("minimize-btn");
   const maxUnmaxButton = document.getElementById("max-unmax-btn");
   const closeButton = document.getElementById("close-btn");
-  menuButton.addEventListener("click", e => {
+  menuButton?menuButton.addEventListener("click", e => {
     window.openMenu(e.x, e.y);
-  });
+  }):null;
 
   minimizeButton.addEventListener("click", e => {
     window.minimizeWindow();

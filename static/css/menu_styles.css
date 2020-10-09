@@ -30,11 +30,37 @@ body {
   background: #34475ab0;
   color: white;
   display: flex;
-  justify-content: top;
-  align-items: left;
-  font-size: 14px;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
 }
 
+.pdfContainer {
+  background: #34475ab0;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  width: 100%;
+  height: calc(100% - 40px);
+}
+
+.pdfContainer iframe {
+  width: 100%;
+  height: 100%;
+}
+
+.viewer {
+  height: calc(100vh - 30px);
+  background: #34475ab0;
+  color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: left;
+  font-size: 1em;
+}
+	
 button {
   height: 100%;
   padding: 0 15px;
