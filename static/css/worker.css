@@ -86,7 +86,6 @@ td.view-button-cell {
 	align-items: center;
 	justify-content: center;
 	align-content: center;
-	border-bottom: 1px dotted #1A232DB0
 }
 
 .toolbar-button {
@@ -98,8 +97,11 @@ td.view-button-cell {
 }
 
 .view-button {
-	height: 24px;
-	width: 24px;
+	height: 22px;
+	width: 22px;
+	border-bottom: 2px solid black;
+	padding-bottom: 2px;
+	padding-top: 2px;
 }
 
 td.no-cell-borders {
@@ -131,7 +133,6 @@ td.size-cell {
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }
 
 /* Tooltip text */
