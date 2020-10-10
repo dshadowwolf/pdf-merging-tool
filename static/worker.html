@@ -25,26 +25,29 @@
             </div>
         </div>
 		<div id="tool-bar">
-			<button type=submit class="button" id="merge-button">
+			<button type=submit class="button tooltip" id="merge-button">
+				<span class="tooltiptext">Merge PDFs</span>
 				<img class="toolbar-button" src="images/merge.svg"/>
 			</button>
-			<button type=submit class="button" id="merge-button">
+			<button type=submit class="button tooltip" id="merge-button">
+				<span class="tooltiptext">Save Merged PDF</span>
 				<img class="toolbar-button" src="images/save-file-option.svg"/>
 			</button>
-			<button type=submit class="button" id="preview-button">
+			<button type=submit class="button tooltip" id="preview-button">
+				<span class="tooltiptext">View Merged PDF</span>
 				<img class="toolbar-button" src="images/search.svg"/>
 			</button>
-			<button type=submit class="button" id="quit-button">
+			<button type=submit class="button tooltip" id="quit-button">
+				<span class="tooltiptext">Close Application</span>
 				<img class="toolbar-button" src="images/cross-circular-button.svg"/>
 			</button>
 		</div>
         <div class="dataContainer" id="data_display">
 			<table class="file-list">
 				<thead>
-					<td><!-- blank in header, column is for button --></td>
-					<td>Name</td>
-					<td>Mime Type</td>
-					<td>Size</td>
+					<td class="view-button-cell"><!-- blank in header, column is for button --></td>
+					<td class="name-cell center-me">Name</td>
+					<td class="size-cell center-me">Size</td>
 				</thead>
 				<tbody>
 				</tbody>
