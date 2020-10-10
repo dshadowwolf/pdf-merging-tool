@@ -25,19 +25,30 @@
             </div>
         </div>
 		<div id="tool-bar">
-			<span class="button-wrapper">
-				<button type=submit class="button" id="merge-button">
-					<img class="merge-button-image" src="images/merge_button.png"/>
-				</button>
-			</span>
-			<span class="button-wrapper" id="save-button">
-				<button type=submit class="button" id="merge-button">
-					<img class="merge-button-image" src="images/merge_button.png"/>
-				</button>
-			</span>
+			<button type=submit class="button" id="merge-button">
+				<img class="toolbar-button" src="images/merge.svg"/>
+			</button>
+			<button type=submit class="button" id="merge-button">
+				<img class="toolbar-button" src="images/save-file-option.svg"/>
+			</button>
+			<button type=submit class="button" id="preview-button">
+				<img class="toolbar-button" src="images/search.svg"/>
+			</button>
+			<button type=submit class="button" id="quit-button">
+				<img class="toolbar-button" src="images/cross-circular-button.svg"/>
+			</button>
 		</div>
         <div class="dataContainer" id="data_display">
-			I Am Blank!
+			<table class="file-list">
+				<thead>
+					<td><!-- blank in header, column is for button --></td>
+					<td>Name</td>
+					<td>Mime Type</td>
+					<td>Size</td>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
         </div>
 
         <!-- You can also require other files to run in this process -->

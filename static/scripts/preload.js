@@ -43,8 +43,8 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 	window.showWorker = (data) => { 
 	    var dts = [];
-		for (const f of event.dataTransfer.files) { 
-			dts.push( f.path );
+		for (const f of event.dataTransfer.files) {
+			dts.push( { path: f.path, type: f.type, size: f.size } );
 		}
 		sendIPC('show-worker', dts);
 	};

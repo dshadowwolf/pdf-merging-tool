@@ -3,15 +3,72 @@ html, body {
     padding: 0;
     width: 100%;
     height: 100%;
+	overflow: hidden;
 }
 
 .dataContainer {
   background: #34475ab0;
   color: white;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: top;
+  align-items: left;
   font-size: 1em;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - 50px);
+  overflow-y: scroll;
+  padding-right: 17px; /* Increase/decrease this value for cross-browser compatibility */
+  box-sizing: content-box; /* So the width will be 100% + 17px */
+  overflow-x: hidden;
+  padding-top: 5px;
 }
+
+table.file-list {
+	width: 100%;
+	background: light-grey;
+	border: 1px solid black;
+	color: black;
+}
+
+table.file-list > thead {
+	background: #688EB4B0;
+	color: white;
+	font-size: 1.25em;
+	font-weight: bold;
+}
+
+table.file-list > tbody > tr.list-item:nth-child(even) {
+	background: #34475AB0;
+	color: white;
+	font-size: 1em;
+}
+
+table.file-list > tbody > tr.list-item:nth-child(odd) {
+	background: light-grey;
+	color: black;
+	font-size: 1em;
+}
+
+td.view-button-cell {
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+}
+
+#tool-bar {
+	background: #34475AB0;
+	height: 32px;
+	align-items: center;
+	justify-content: center;
+	border-bottom: 1px dotted #1A232DB0
+}
+
+.toolbar-button {
+	height: 32px;
+	width: 32px;
+}
+
+.view-button {
+	height: 16px;
+	width: 16px;
+}
+

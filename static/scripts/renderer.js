@@ -26,7 +26,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   maxUnmaxButton.addEventListener("click", e => {
-    const icon = maxUnmaxButton.querySelector("i.far");
+    const icon = maxUnmaxButton.querySelector("svg");
 
     window.maxUnmaxWindow();
     if (window.isWindowMaximized()) {

@@ -55,7 +55,7 @@ function createWindows() {
 		app.quit();
 	});
 	previewWindow = createWindow(1024, 768, false, mainWindow);
-	previewWindow.webContents.openDevTools();
+	//previewWindow.webContents.openDevTools();
 	previewWindow.loadFile('static/viewer.html');
 	previewWindow.on('close', e => hideWindow(e, previewWindow));
 	workWindow = createWindow(800, 600, false, mainWindow);
@@ -129,7 +129,6 @@ ipcMain.on(`view-file`, (e, args) => {
 });
 
 ipcMain.on(`show-worker`, (e, args) => {
-    console.log(require('util').inspect(args, { depth: 3 }));
 	workWindow.show();
 	workWindow.webContents.send(`worker-show-data`, args);
 });
