@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; img-src *; script-src 'self' 'unsafe-inline';" />
+        <title>Work Window</title>
+        <link rel="stylesheet" href="css/normalize.css" />
+        <link rel="stylesheet" href="css/base.css" />
+        <link rel="stylesheet" href="css/menu_styles.css" />
+        <link rel="stylesheet" href="css/all.css" />
+        <link rel='stylesheet' href='css/worker.css' />
+		<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+		<script src='scripts/jquery.js' ></script>
+        <script crossorigin="anonymous" src="js/all.js" ></script>
+    </head>
+    <body>
+        <div id="menu-bar">
+            <div class="left" role="menu">
+            </div>
+            <div class="right">
+                <button class="menubar-btn" id="minimize-btn"><i class="fas fa-window-minimize"></i></button>
+                <button class="menubar-btn" id="max-unmax-btn"><i class="far fa-square"></i></button>
+                <button class="menubar-btn" id="close-btn"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+		<div id="tool-bar">
+			<span class="button-wrapper">
+				<button type=submit class="button" id="merge-button">
+					<img class="merge-button-image" src="images/merge_button.png"/>
+				</button>
+			</span>
+			<span class="button-wrapper" id="save-button">
+				<button type=submit class="button" id="merge-button">
+					<img class="merge-button-image" src="images/merge_button.png"/>
+				</button>
+			</span>
+		</div>
+        <div class="dataContainer" id="data_display">
+			I Am Blank!
+        </div>
+
+        <!-- You can also require other files to run in this process -->
+        <script src="scripts/renderer.js"></script>
+		<script src="scripts/worker_functions.js"></script>
+    </body>
+</html>
