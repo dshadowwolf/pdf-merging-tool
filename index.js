@@ -42,7 +42,7 @@ function hideWindow(event, window) {
 
 function createWindows() {
 	mainWindow = createWindow(1024, 768, true, undefined);
-	mainWindow.webContents.openDevTools();
+	//mainWindow.webContents.openDevTools();
     mainWindow.loadFile('static/index.html');
 	mainWindow.on('close', e => {
 		previewWindow.close();
@@ -54,11 +54,12 @@ function createWindows() {
 		mainWindow = null
 		app.quit();
 	});
-	previewWindow = createWindow(768, 1024, false, mainWindow);
-	//previewWindow.webContents.openDevTools();
+	previewWindow = createWindow(1024, 768, false, mainWindow);
+	previewWindow.webContents.openDevTools();
 	previewWindow.loadFile('static/viewer.html');
 	previewWindow.on('close', e => hideWindow(e, previewWindow));
-	workWindow = createWindow(600, 1024, false, mainWindow);
+	workWindow = createWindow(800, 600, false, mainWindow);
+	//workWindow.webContents.openDevTools();
 	workWindow.loadFile('static/worker.html');
 	workWindow.on('close', e => hideWindow(e, workWindow));
 }
@@ -96,7 +97,7 @@ ipcMain.on(`display-app-menu`, function(e, args) {
     }
 });
 
-async function mergePDFs() {
+/* async function mergePDFs() {
     if (sourcePDFs.length == 0) {
         return Buffer.from("");
     } else  if (sourcePDFs.length == 1) {
@@ -119,16 +120,16 @@ async function mergePDFs() {
         return doc.save();
     }
 }
+ */
 
-var sourcePDFs = [];
-
-ipcMain.on(`merge-pdfs`, function(e, args) {
-    let data = mergePDFs();
-    data instanceof Promise?data.then( d => e.returnValue = d):e.returnValue = data;
+ipcMain.on(`view-file`, (e, args) => {
+    console.log(require('util').inspect(args, { depth: 3 }));
+	previewWindow.show();
+	previewWindow.webContents.send(`viewer-show-file`, args);
 });
 
-ipcMain.on(`file-data`, (e, args) => {
+ipcMain.on(`show-worker`, (e, args) => {
     console.log(require('util').inspect(args, { depth: 3 }));
-    sourcePDFs = args.map( (item) => item.name );
-    console.log(require('util').inspect(sourcePDFs, { depth: 3 }));
+	workWindow.show();
+	workWindow.webContents.send(`worker-show-data`, args);
 });

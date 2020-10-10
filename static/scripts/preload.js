@@ -41,6 +41,12 @@ window.addEventListener("DOMContentLoaded", () => {
             win.loadURL(url);
         }
     };
-    window.sendLoadedFileList = (data) => { sendIPC('file-data', data) };
-    window.mergeFiles = async () => { return invokeIPC('merge-pdfs') };
+	window.showWorker = (data) => { 
+	    var dts = [];
+		for (const f of event.dataTransfer.files) { 
+			dts.push( f.path );
+		}
+		sendIPC('show-worker', dts);
+	};
+	window.viewFile = (filename) => sendIPC('view-file', filename);
 });
