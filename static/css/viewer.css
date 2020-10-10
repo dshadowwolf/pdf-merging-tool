@@ -15,12 +15,33 @@ div.picker {
     align-items: center;
 }
 
-div.viewer {
-    width: 100%;
-    height: calc(100% - 40px);
+.pdfContainer {
+  background: #34475ab0;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  width: 100%;
+  height: calc(100% - 40px);
 }
 
-div.viewer iframe {
+.pdfContainer iframe {
+  width: 100%;
+  height: 100%;
+}
+
+.viewer {
+  height: calc(100vh - 30px);
+  background: #34475ab0;
+  color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: left;
+  font-size: 1em;
+}
+
+.viewer iframe {
     width: 100%;
     height: 100%;
 }
