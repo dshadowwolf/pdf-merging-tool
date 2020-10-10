@@ -24,8 +24,9 @@ function createWindow(width, height, showMe, parentWindow) {
         webPreferences: {
             preload: path.join(__dirname, "static/scripts/preload.js"),
             enableRemoteModule: true,
-            nodeIntegration: true
-        }
+            nodeIntegration: true,
+			worldSafeExecuteJavaScript: true
+		}
     });
 	
 	win.setMenuBarVisibility(false);
@@ -53,7 +54,8 @@ function createWindows() {
 		mainWindow = null
 		app.quit();
 	});
-	previewWindow = createWindow(768, 1024, true, mainWindow);
+	previewWindow = createWindow(768, 1024, false, mainWindow);
+	//previewWindow.webContents.openDevTools();
 	previewWindow.loadFile('static/viewer.html');
 	previewWindow.on('close', e => hideWindow(e, previewWindow));
 	workWindow = createWindow(600, 1024, false, mainWindow);
