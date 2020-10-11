@@ -155,6 +155,8 @@ ipcMain.on(`merge-files`, (e, args) => {
 	mergePDFs(args).then(pdf => maybeSaveTemp(pdf)).then( (_) => workWindow.webContents.send('hide-spinner') );
 });
 
+ipcMain.on(`quit-app`, (e, args) => app.quit() );
+
 ipcMain.on(`display-app-menu`, function(e, args) {
     if ((isWindows || isLinux) && mainWindow) {
         menu.popup({

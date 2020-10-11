@@ -19,7 +19,7 @@ $(document).ready( () => {
 	let dd = $('#data_display');
 	let ch = $('#fade-wrapper > div.sk-chase');
 	ch.offset( { top: ((dd.height()/2) - (ch.height()/2)) + 37, left: ((dd.width()/2) - (ch.width()/2)) } )
-	$('#quit-button').on('click', () => alert('QUIT!') /* ipcRenderer.sendSync('quit-application') */);
+	$('#quit-button').on('click', () => ipcRenderer.sendSync('quit-appl') );
 	$('#preview-button').on('click', () => ipcRenderer.send('preview-merged', files ) );
 	$('#save-button').on('click', () => ipcRenderer.sendSync('save-file', files) );
 	$('#merge-button').on('click', () => ipcRenderer.sendSync('merge-files', files) );
