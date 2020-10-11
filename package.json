@@ -5,13 +5,19 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "electron ."
+        "start": "electron .",
+		"pack": "electron-bulder --dir",
+		"dist": "electron-bulder",
+		"postinstall": "electron-bulder install-app-deps"
     },
     "author": "Daniel \"DShadowWolf\" Hazelton",
     "license": "UNLICENSED",
     "build": {
-        "extraResources": [
-            "./public/**"
+		"appId": "com.electron.pdf-merger",
+		"productName": "Simple PDF Merging Tool",
+		"copyright": "Copyright © year Daniel \"DShadowWolf\" Hazelton",
+        "files": [
+            "./static/**"
         ]
     },
     "devDependencies": {
