@@ -1,20 +1,27 @@
+// imports
 const { app, BrowserWindow, ipcMain, Menu, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const tmp = require('tmp-promise');
-
 const {PDFDocument } = require('pdf-lib');
 
+// global data
 var mainWindow;
 var previewWindow;
 var workWindow;
+
+var lastFiles = [];
+var lastFile = "";
+var lastData = Buffer.from("");
 
 const isWindows = process.platform === "win32";
 const isLinux = process.platform === "linux";
 const isMac = process.platform === "darwin";
 
+// do this as early as possible
 Menu.setApplicationMenu(false);
 
+// helper functions
 function createWindow(width, height, showMe, parentWindow) {
 	var win = new BrowserWindow({
 		width: width,
@@ -65,43 +72,6 @@ function createWindows() {
 	workWindow.loadFile('static/worker.html');
 	workWindow.on('close', e => hideWindow(e, workWindow));
 }
-	
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.whenReady().then(createWindows)
-
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-    if (!isMac) {
-        app.quit()
-    }
-})
-
-app.on('activate', () => {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) {
-        createWindows()
-    }
-})
-
-// Register an event listener. When ipcRenderer sends mouse click co-ordinates, show menu at that point.
-ipcMain.on(`display-app-menu`, function(e, args) {
-    if ((isWindows || isLinux) && mainWindow) {
-        menu.popup({
-            window: mainWindow,
-            x: args.x,
-            y: args.y
-        });
-    }
-});
-
-var lastFiles = [];
-var lastFile = "";
-var lastData = Buffer.from("");
 
 async function mergePDFs(sourcePDFs) {
 	if (sourcePDFs.filter( item => !lastFiles.includes(item) ).length == 0 && sourcePDFs.length == lastFiles.length) return lastData;
@@ -128,6 +98,23 @@ async function mergePDFs(sourcePDFs) {
     }
 }
 
+async function maybeSaveTemp(data) {
+	if (lastData != data) {
+		switch(lastFile) {
+			case "":
+				return tmp.file().then( f => {
+					lastFile = f.path;
+					lastData = data;
+					fs.writeFileSync(lastFile, data);
+				});
+			default:
+				fs.writeFileSync(lastFile, data);
+		}
+	}
+	return data;
+}
+
+// event handlers -- IPC
 ipcMain.on(`view-file`, (e, args) => {
     console.log(require('util').inspect(args, { depth: 3 }));
 	previewWindow.show();
@@ -141,19 +128,55 @@ ipcMain.on(`show-worker`, (e, args) => {
 
 ipcMain.on(`preview-merged`, (e, args) => {
 	workWindow.webContents.send('show-spinner');
+	mergePDFs(args).then(pdf => maybeSaveTemp(pdf)).then( (_) => {
+		previewWindow.webContents.send(`viewer-show-file`, lastFile); 
+		previewWindow.show(); 
+		workWindow.webContents.send('hide-spinner');
+	});
+});
+
+ipcMain.on(`save-file`, (e, args) => {
+	let save_name = dialog.showSaveDialogSync(mainWindow, { title: 'Save Merged PDF', filters: [ { name: 'PDF Files', extensions: [ 'pdf' ] }, { name: 'All Files', extensions: [ '*' ] } ] });
+	workWindow.webContents.send('show-spinner');
 	mergePDFs(args).then(pdf => {
 		if (lastFile != "" && pdf == lastData) {
-			previewWindow.webContents.send(`viewer-show-file`, lastFile); 
-			previewWindow.show(); 
+			fs.copyFileSync(lastFile, save_name);
 		} else {
 			lastData = pdf;
-			tmp.file().then( f => {
-				lastFile = f.path;
-				fs.writeFileSync(f.path, pdf);
-				previewWindow.webContents.send(`viewer-show-file`, f.path); 
-				previewWindow.show(); 
-			});
+			lastFile = save_name;
+			fs.writeFileSync(save_name, pdf);
 		}
 		workWindow.webContents.send('hide-spinner');
 	});
 });
+	
+ipcMain.on(`merge-files`, (e, args) => {
+	workWindow.webContents.send('show-spinner');
+	mergePDFs(args).then(pdf => maybeSaveTemp(pdf)).then( (_) => workWindow.webContents.send('hide-spinner') );
+});
+
+ipcMain.on(`display-app-menu`, function(e, args) {
+    if ((isWindows || isLinux) && mainWindow) {
+        menu.popup({
+            window: mainWindow,
+            x: args.x,
+            y: args.y
+        });
+    }
+});
+
+// event handlers -- application
+app.whenReady().then(createWindows);
+
+app.on('window-all-closed', () => {
+    if (!isMac) {
+        app.quit()
+    }
+});
+
+app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+        createWindows()
+    }
+});
+

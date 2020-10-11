@@ -16,18 +16,13 @@ ipcRenderer.on(`hide-spinner`, (e) => {
 var files = [];
 
 $(document).ready( () => {
-	console.log(`${$('#data_display').width()} x ${$('#data_display').height()}`);
 	let dd = $('#data_display');
 	let ch = $('#fade-wrapper > div.sk-chase');
 	ch.offset( { top: ((dd.height()/2) - (ch.height()/2)) + 37, left: ((dd.width()/2) - (ch.width()/2)) } )
-	console.log(`${ch.position()}`);
 	$('#quit-button').on('click', () => alert('QUIT!') /* ipcRenderer.sendSync('quit-application') */);
-	$('#preview-button').on('click', function() {
-		files?console.log(`files: ${require('util').inspect(files)}`):console.log('no files ?');
-		ipcRenderer.send('preview-merged', files );
-	});
-	$('#save-button').on('click', () => alert('SAVE') /* ipcRenderer.sendSync('save-project', files) */ );
-	$('#merge-button').on('click', () => alert('MERGE') /* ipcRenderer.sendSync('merge-files', files) */ );
+	$('#preview-button').on('click', () => ipcRenderer.send('preview-merged', files ) );
+	$('#save-button').on('click', () => ipcRenderer.sendSync('save-file', files) );
+	$('#merge-button').on('click', () => ipcRenderer.sendSync('merge-files', files) );
 	$('#fade-wrapper').hide();
 });
 
