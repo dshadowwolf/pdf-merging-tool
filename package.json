@@ -3,29 +3,62 @@
     "version": "1.0.0",
     "description": "simple tool to merge a set of PDF's into a single file",
     "main": "index.js",
-	"repository": "github:dshadowwolf/pdf-merging-tool",
+    "repository": "github:dshadowwolf/pdf-merging-tool",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "electron .",
-		"pack": "electron-bulder --dir",
-		"dist": "electron-bulder",
-		"postinstall": "electron-bulder install-app-deps"
+        "pack": "electron-builder --dir -wl --ia32 --x64",
+        "dist": "electron-builder -wl --ia32 --x64",
+        "postinstall": "electron-builder install-app-deps"
     },
-    "author": "Daniel \"DShadowWolf\" Hazelton",
+    "author": "Daniel 'DShadowWolf' Hazelton",
     "license": "UNLICENSED",
     "build": {
-		"appId": "com.electron.pdf-merger",
-		"productName": "Simple PDF Merging Tool",
-		"copyright": "Copyright © year Daniel \"DShadowWolf\" Hazelton",
+        "appId": "com.electron.pdf-merger",
+        "productName": "Simple PDF Merging Tool",
+        "copyright": "Copyright © year Daniel 'DShadowWolf' Hazelton",
         "files": [
-            "./static/**"
-        ]
+            "./static/**",
+            "index.js",
+            "./lib/**"
+        ],
+        "win": {
+            "publish": [
+                "github"
+            ]
+        }
     },
     "devDependencies": {
-        "electron": "^10.1.3"
+        "electron": "^10.1.3",
+        "electron-packager": "^15.1.0"
     },
     "dependencies": {
         "pdf-lib": "^1.11.1",
         "tmp-promise": "^3.0.2"
+    },
+    "linux": {
+        "category": "Utility",
+        "target": [
+            "deb",
+            "rpm",
+            "tar.xz",
+            "tar.bz2",
+            "AppImage",
+            "snap"
+        ]
+    },
+    "win": {
+        "target": [
+            "nsis",
+            "zip",
+            "7z"
+        ]
+    },
+    "nsis": {
+        "oneClick": "true"
+    },
+    "snap": {
+        "confinement": "strict",
+        "grade": "devel"
     }
 }
