@@ -5,6 +5,32 @@ ipcRenderer.on(`worker-show-data`, (e, data) => {
 	displayData(data);
 });
 
+ipcRenderer.on(`show-spinner`, (e) => {
+	$('#fade-wrapper').show();
+});
+	
+ipcRenderer.on(`hide-spinner`, (e) => {
+	$('#fade-wrapper').hide();
+});
+
+var files = [];
+
+$(document).ready( () => {
+	console.log(`${$('#data_display').width()} x ${$('#data_display').height()}`);
+	let dd = $('#data_display');
+	let ch = $('#fade-wrapper > div.sk-chase');
+	ch.offset( { top: ((dd.height()/2) - (ch.height()/2)) + 37, left: ((dd.width()/2) - (ch.width()/2)) } )
+	console.log(`${ch.position()}`);
+	$('#quit-button').on('click', () => alert('QUIT!') /* ipcRenderer.sendSync('quit-application') */);
+	$('#preview-button').on('click', function() {
+		files?console.log(`files: ${require('util').inspect(files)}`):console.log('no files ?');
+		ipcRenderer.send('preview-merged', files );
+	});
+	$('#save-button').on('click', () => alert('SAVE') /* ipcRenderer.sendSync('save-project', files) */ );
+	$('#merge-button').on('click', () => alert('MERGE') /* ipcRenderer.sendSync('merge-files', files) */ );
+	$('#fade-wrapper').hide();
+});
+
 function makeCell(contents, classes) {
 	let classlist = "no-cell-borders";
 	if (classes)
@@ -43,7 +69,10 @@ function makeRow(filedata) {
 function makeTableData(file_list) {
 	var rv = [];
 	
-	file_list.filter( (file) => file.type === 'application/pdf' ).forEach( (file) => rv.push(makeRow(file)) );
+	file_list.filter( (file) => file.type === 'application/pdf' ).forEach( (file) => {
+		rv.push(makeRow(file));
+		files.push(file.path);
+	});
 	
 	return rv;
 }
@@ -51,6 +80,7 @@ function makeTableData(file_list) {
 function displayData(data) {
 	let table_body = $('#data_display > table.file-list > tbody');
 	table_body.text('');
-
+	files = [];
+	
 	makeTableData(data).forEach( row => table_body.append(row) )
 }

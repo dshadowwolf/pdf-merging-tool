@@ -1,6 +1,8 @@
 const { app, BrowserWindow, ipcMain, Menu, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const tmp = require('tmp-promise');
+
 const {PDFDocument } = require('pdf-lib');
 
 var mainWindow;
@@ -59,7 +61,7 @@ function createWindows() {
 	previewWindow.loadFile('static/viewer.html');
 	previewWindow.on('close', e => hideWindow(e, previewWindow));
 	workWindow = createWindow(800, 600, false, mainWindow);
-	//workWindow.webContents.openDevTools();
+	workWindow.webContents.openDevTools();
 	workWindow.loadFile('static/worker.html');
 	workWindow.on('close', e => hideWindow(e, workWindow));
 }
@@ -97,7 +99,13 @@ ipcMain.on(`display-app-menu`, function(e, args) {
     }
 });
 
-/* async function mergePDFs() {
+var lastFiles = [];
+var lastFile = "";
+var lastData = Buffer.from("");
+
+async function mergePDFs(sourcePDFs) {
+	if (sourcePDFs.filter( item => !lastFiles.includes(item) ).length == 0 && sourcePDFs.length == lastFiles.length) return lastData;
+	
     if (sourcePDFs.length == 0) {
         return Buffer.from("");
     } else  if (sourcePDFs.length == 1) {
@@ -105,22 +113,20 @@ ipcMain.on(`display-app-menu`, function(e, args) {
     } else {
         let doc = await PDFDocument.create();
 
-        for( let i = 0; i < sourcePDFs.length; i++) {
-            console.log(`reading ${sourcePDFs[i]} (item ${i} in the array of ${sourcePDFs.length} items)`);
-            const data = await PDFDocument.load(fs.readFileSync(sourcePDFs[i]));
+		lastFiles = []; // clear it
+        for( src of sourcePDFs ) {
+			lastFiles.push(src);
+            const data = await PDFDocument.load(fs.readFileSync(src));
             const contentPages = await doc.copyPages(data, data.getPageIndices());
-            let pc = 1;
+
             for (const page of contentPages) {
                 doc.addPage( page );
-                console.log(`merging page ${pc} of ${sourcePDFs[i]} into output document`);
-                pc += 1;
             }
         }
 
         return doc.save();
     }
 }
- */
 
 ipcMain.on(`view-file`, (e, args) => {
     console.log(require('util').inspect(args, { depth: 3 }));
@@ -131,4 +137,23 @@ ipcMain.on(`view-file`, (e, args) => {
 ipcMain.on(`show-worker`, (e, args) => {
 	workWindow.show();
 	workWindow.webContents.send(`worker-show-data`, args);
+});
+
+ipcMain.on(`preview-merged`, (e, args) => {
+	workWindow.webContents.send('show-spinner');
+	mergePDFs(args).then(pdf => {
+		if (lastFile != "" && pdf == lastData) {
+			previewWindow.webContents.send(`viewer-show-file`, lastFile); 
+			previewWindow.show(); 
+		} else {
+			lastData = pdf;
+			tmp.file().then( f => {
+				lastFile = f.path;
+				fs.writeFileSync(f.path, pdf);
+				previewWindow.webContents.send(`viewer-show-file`, f.path); 
+				previewWindow.show(); 
+			});
+		}
+		workWindow.webContents.send('hide-spinner');
+	});
 });
