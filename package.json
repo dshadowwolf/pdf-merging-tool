@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "simple tool to merge a set of PDF's into a single file",
     "main": "index.js",
+	"repository": "github:dshadowwolf/pdf-merging-tool",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "electron .",
