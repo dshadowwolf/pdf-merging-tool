@@ -68,7 +68,7 @@ function createWindows() {
 	previewWindow.loadFile('static/viewer.html');
 	previewWindow.on('close', e => hideWindow(e, previewWindow));
 	workWindow = createWindow(800, 600, false, mainWindow);
-	workWindow.webContents.openDevTools();
+	//workWindow.webContents.openDevTools();
 	workWindow.loadFile('static/worker.html');
 	workWindow.on('close', e => hideWindow(e, workWindow));
 }
