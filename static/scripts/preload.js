@@ -41,12 +41,12 @@ window.addEventListener("DOMContentLoaded", () => {
             win.loadURL(url);
         }
     };
-	window.showWorker = (data) => { 
+	window.showWorker = (first, data) => { 
 	    var dts = [];
 		for (const f of event.dataTransfer.files) {
 			dts.push( { path: f.path, type: f.type, size: f.size } );
 		}
-		sendIPC('show-worker', dts);
+		sendIPC('show-worker', { isFirst: first, data: dts });
 	};
 	window.viewFile = (filename) => sendIPC('view-file', filename);
 });

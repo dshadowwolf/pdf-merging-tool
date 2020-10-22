@@ -1,3 +1,5 @@
+var firstDrop = true;
+
 function getExtension(name) {
     let re = /.*\.(.+)$/;
     return re.exec(name)[1].toLowerCase();
@@ -15,7 +17,8 @@ document.addEventListener('drop', (event) => {
     event.preventDefault(); 
     event.stopPropagation(); 
 
-	window.showWorker(event.dataTransfer.files);
+	window.showWorker(firstDrop, event.dataTransfer.files);
+	firstDrop = false;
 });
 
 document.addEventListener('dragover', (e) => { 

@@ -19,7 +19,7 @@ $(document).ready( () => {
 	let dd = $('#data_display');
 	let ch = $('#fade-wrapper > div.sk-chase');
 	ch.offset( { top: ((dd.height()/2) - (ch.height()/2)) + 37, left: ((dd.width()/2) - (ch.width()/2)) } )
-	$('#quit-button').on('click', () => ipcRenderer.sendSync('quit-appl') );
+	$('#quit-button').on('click', () => ipcRenderer.sendSync('quit-app') );
 	$('#preview-button').on('click', () => ipcRenderer.send('preview-merged', files ) );
 	$('#save-button').on('click', () => ipcRenderer.sendSync('save-file', files) );
 	$('#merge-button').on('click', () => ipcRenderer.sendSync('merge-files', files) );
@@ -75,7 +75,7 @@ function makeTableData(file_list) {
 function displayData(data) {
 	let table_body = $('#data_display > table.file-list > tbody');
 	table_body.text('');
-	files = [];
-	
-	makeTableData(data).forEach( row => table_body.append(row) )
+	if (data.isFirst) files = [];
+
+	makeTableData(data.data).forEach( row => table_body.append(row) )
 }
